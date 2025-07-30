@@ -111,7 +111,7 @@ export default function SolutionsPro() {
       <section className="relative pt-32 pb-16">
         {/* Background image with overlay */}
         <Image
-          src="/images/solution pro.png"
+          src="/Public/images/solution pro.png"
           alt="Solutions Pro"
           fill
           className="object-cover"

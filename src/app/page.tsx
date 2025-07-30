@@ -10,7 +10,7 @@ export default function Home() {
       <section className="py-12 relative">
         {/* Background image with overlay */}
         <Image
-          src="/images/food-market.png"
+          src="/Public/images/food-market.png"
           alt="Food Market"
           fill
           className="object-cover"
