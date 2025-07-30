@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: naama-market-api
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://naama-market.windsurf.build
