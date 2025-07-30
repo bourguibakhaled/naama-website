@@ -3,7 +3,7 @@
   publish = ".next"
 
 [build.environment]
-  NEXT_PUBLIC_API_URL = "https://naama-market-api.onrender.com"
+  NEXT_PUBLIC_API_URL = "https://naama-market.onrender.com"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
