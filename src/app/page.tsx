@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import foodMarketImage from '../images/food-market.png';
 
 export default function Home() {
   return (
@@ -10,7 +11,7 @@ export default function Home() {
       <section className="py-12 relative">
         {/* Background image with overlay */}
         <Image
-          src="/Public/images/food-market.png"
+          src={foodMarketImage}
           alt="Food Market"
           fill
           className="object-cover"
