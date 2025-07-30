@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import solutionsProImage from '../../images/solution pro.png';
+
 import { API_ENDPOINTS } from '@/config/api';
 
 export default function SolutionsPro() {
@@ -112,7 +112,7 @@ export default function SolutionsPro() {
       <section className="relative pt-32 pb-16">
         {/* Background image with overlay */}
         <Image
-          src={solutionsProImage}
+          src="https://i.ibb.co/ZRBWrsmS/solution-pro.png"
           alt="Solutions Pro"
           fill
           className="object-cover"
