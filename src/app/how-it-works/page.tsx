@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import BrowseDealsIllustration from '@/components/illustrations/BrowseDealsIllustration';
 import OrderProcessIllustration from '@/components/illustrations/OrderProcessIllustration';
 import CollectionProcessIllustration from '@/components/illustrations/CollectionProcessIllustration';
@@ -11,11 +12,12 @@ export default function HowItWorks() {
       {/* Hero Section */}
       <section className="relative py-12">
         {/* Background image with overlay */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-          style={{ 
-            backgroundImage: 'url("/images/fruit.png")',
-          }}
+        <Image
+          src="https://i.ibb.co/jkL6vKVK/fruit.png"
+          alt="Fruit Market"
+          fill
+          className="object-cover"
+          priority
         />
         <div className="absolute inset-0 bg-black/40" /> {/* Dark overlay for better text readability */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
