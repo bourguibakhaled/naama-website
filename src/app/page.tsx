@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -8,11 +9,12 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-12 relative">
         {/* Background image with overlay */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-          style={{ 
-            backgroundImage: 'url("/images/food-market.png")',
-          }}
+        <Image
+          src="/images/food-market.png"
+          alt="Food Market"
+          fill
+          className="object-cover"
+          priority
         />
         <div className="absolute inset-0 bg-black/40" /> {/* Dark overlay for better text readability */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
