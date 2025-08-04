@@ -9,7 +9,7 @@ const app = express();
 
 // Environment variables
 const PORT = process.env.PORT || 5000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://localhost:3001'];
+const CORS_ORIGIN = process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://localhost:3001', 'https://cozy-sprite-5191d7.netlify.app'];
 
 // Configure CORS
 app.use(cors({
