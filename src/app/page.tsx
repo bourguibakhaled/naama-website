@@ -2,9 +2,58 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
+import { API_ENDPOINTS } from '@/config/api';
 
 
 export default function Home() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    phone: ''
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError('');
+    
+    try {
+      console.log('Sending signup request:', formData);
+      const response = await fetch(API_ENDPOINTS.signup, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      console.log('Signup response:', data);
+
+      if (response.ok) {
+        setSubmitSuccess(true);
+        setFormData({ email: '', phone: '' });
+      } else {
+        setSubmitError(data.message || 'Failed to sign up. Please try again.');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      setSubmitError('Network error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -94,6 +143,57 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-2">Collect & Enjoy</h3>
               <p className="text-gray-600">Pick up your food during the specified collection time</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Early Access Section */}
+      <section className="py-16 bg-primary">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-white mb-6">Get Early Access</h2>
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Sign up now to be among the first to access exclusive deals in your area.
+            </p>
+            <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  required
+                  className="w-full px-4 py-2 rounded-md text-gray-900 placeholder-gray-500"
+                />
+              </div>
+              <div>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Enter your phone number"
+                  required
+                  className="w-full px-4 py-2 rounded-md text-gray-900 placeholder-gray-500"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-white text-primary px-6 py-3 rounded-md font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50"
+              >
+                {isSubmitting ? 'Signing up...' : 'Get Early Access'}
+              </button>
+              {submitError && (
+                <p className="text-red-200 text-sm mt-2">{submitError}</p>
+              )}
+              {submitSuccess && (
+                <p className="text-white text-sm mt-2">
+                  Thanks for signing up! We'll notify you when we launch in your area.
+                </p>
+              )}
+            </form>
           </div>
         </div>
       </section>
