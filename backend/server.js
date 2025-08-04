@@ -9,13 +9,24 @@ const app = express();
 
 // Environment variables
 const PORT = process.env.PORT || 5000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://localhost:3001', 'https://cozy-sprite-5191d7.netlify.app'];
+const CORS_ORIGIN = process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://localhost:3001', 'https://cozy-sprite-5191d7.netlify.app', 'https://naama-market.windsurf.build'];
 
 // Configure CORS
 app.use(cors({
-  origin: CORS_ORIGIN,
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type']
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (CORS_ORIGIN.indexOf(origin) !== -1 || origin.endsWith('netlify.app')) {
+      callback(null, true);
+    } else {
+      console.log('Blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  credentials: true
 }));
 
 app.use(express.json());
