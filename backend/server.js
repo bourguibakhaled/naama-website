@@ -9,25 +9,23 @@ const app = express();
 
 // Environment variables
 const PORT = process.env.PORT || 5000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://localhost:3001', 'https://cozy-sprite-5191d7.netlify.app', 'https://naama-market.windsurf.build'];
 
-// Configure CORS
-app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (CORS_ORIGIN.indexOf(origin) !== -1 || origin.endsWith('netlify.app')) {
-      callback(null, true);
-    } else {
-      console.log('Blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-  credentials: true
-}));
+// Configure CORS - Allow all origins in development, specific origin in production
+app.use((req, res, next) => {
+  const allowedOrigin = process.env.NODE_ENV === 'production'
+    ? 'https://cozy-sprite-5191d7.netlify.app'
+    : req.headers.origin;
+
+  res.header('Access-Control-Allow-Origin', allowedOrigin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Credentials', 'true');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 app.use(express.json());
 
