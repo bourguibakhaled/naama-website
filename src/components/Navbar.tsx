@@ -25,7 +25,7 @@ export default function Navbar() {
               How It Works
             </Link>
             <Link href="/solutions-pro" className="text-gray-700 hover:text-primary">
-              business solutions
+              Business Solutions
             </Link>
             <Link href="/download" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
               Download App
@@ -76,10 +76,10 @@ export default function Navbar() {
               Home
             </Link>
             <Link
-              href="/restaurants"
+              href="/solutions-pro"
               className="block px-3 py-2 text-gray-700 hover:text-primary"
             >
-              Restaurants
+              Business Solutions
             </Link>
             <Link
               href="/how-it-works"
