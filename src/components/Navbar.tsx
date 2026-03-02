@@ -11,24 +11,27 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-primary text-xl font-bold">Naama Market</span>
+            <Link href="/" className="flex-shrink-0 flex items-center gap-2">
+              <span className="text-primary text-2xl font-bold tracking-tight">Naam&acirc;</span>
             </Link>
           </div>
 
           {/* Desktop menu */}
           <div className="hidden md:flex md:items-center md:space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-primary">
-              Home
+            <Link href="/" className="text-gray-700 hover:text-primary transition-colors">
+              Accueil
             </Link>
-            <Link href="/how-it-works" className="text-gray-700 hover:text-primary">
-              How It Works
+            <Link href="/how-it-works" className="text-gray-700 hover:text-primary transition-colors">
+              Comment ça marche
             </Link>
-            <Link href="/solutions-pro" className="text-gray-700 hover:text-primary">
-              Business Solutions
+            <Link href="/solutions-pro" className="text-gray-700 hover:text-primary transition-colors">
+              Partenaires
             </Link>
-            <Link href="/download" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
-              Download App
+            <Link href="/contact" className="text-gray-700 hover:text-primary transition-colors">
+              Contact
+            </Link>
+            <Link href="/download" className="bg-primary text-white px-5 py-2 rounded-full hover:bg-primary-dark transition-colors font-medium">
+              Télécharger
             </Link>
           </div>
 
@@ -72,26 +75,37 @@ export default function Navbar() {
             <Link
               href="/"
               className="block px-3 py-2 text-gray-700 hover:text-primary"
+              onClick={() => setIsMenuOpen(false)}
             >
-              Home
-            </Link>
-            <Link
-              href="/solutions-pro"
-              className="block px-3 py-2 text-gray-700 hover:text-primary"
-            >
-              Business Solutions
+              Accueil
             </Link>
             <Link
               href="/how-it-works"
               className="block px-3 py-2 text-gray-700 hover:text-primary"
+              onClick={() => setIsMenuOpen(false)}
             >
-              How It Works
+              Comment ça marche
+            </Link>
+            <Link
+              href="/solutions-pro"
+              className="block px-3 py-2 text-gray-700 hover:text-primary"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Partenaires
+            </Link>
+            <Link
+              href="/contact"
+              className="block px-3 py-2 text-gray-700 hover:text-primary"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact
             </Link>
             <Link
               href="/download"
-              className="block px-3 py-2 text-gray-700 hover:text-primary"
+              className="block mx-3 mt-2 text-center bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition-colors font-medium"
+              onClick={() => setIsMenuOpen(false)}
             >
-              Download App
+              Télécharger
             </Link>
           </div>
         </div>

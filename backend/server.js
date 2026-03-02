@@ -2,8 +2,43 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 const User = require('./models/User');
 const Contact = require('./models/Contact');
+
+// Email transporter configuration (OVH SMTP)
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'ssl0.ovh.net',
+  port: parseInt(process.env.SMTP_PORT || '465'),
+  secure: true,
+  auth: {
+    user: process.env.SMTP_USER || 'contact@naamâ.com',
+    pass: process.env.SMTP_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
+// Verify email connection on startup
+transporter.verify()
+  .then(() => console.log('SMTP email connection verified'))
+  .catch(err => console.error('SMTP connection error:', err.message));
+
+// Helper: send email notification
+async function sendEmailNotification(subject, htmlBody) {
+  try {
+    await transporter.sendMail({
+      from: `"Naamâ" <${process.env.SMTP_USER || 'contact@naamâ.com'}>`,
+      to: process.env.SMTP_USER || 'contact@naamâ.com',
+      subject,
+      html: htmlBody,
+    });
+    console.log('Email notification sent:', subject);
+  } catch (error) {
+    console.error('Failed to send email:', error.message);
+  }
+}
 
 const app = express();
 
@@ -13,7 +48,7 @@ const PORT = process.env.PORT || 5000;
 // Configure CORS - Allow all origins in development, specific origin in production
 app.use((req, res, next) => {
   const allowedOrigin = process.env.NODE_ENV === 'production'
-    ? 'https://cozy-sprite-5191d7.netlify.app'
+    ? 'https://naamâ.com'
     : req.headers.origin;
 
   res.header('Access-Control-Allow-Origin', allowedOrigin);
@@ -52,6 +87,17 @@ mongoose.connect(mongoURI, {
 
 // Routes
 
+// Get all users
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find().sort({ createdAt: -1 });
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+});
+
 // Get all contacts
 app.get('/api/contacts', async (req, res) => {
   try {
@@ -82,6 +128,19 @@ app.post('/api/contact', async (req, res) => {
 
     await contact.save();
     console.log('Contact form submission saved:', contact);
+
+    // Send email notification
+    await sendEmailNotification(
+      `New Contact/Partner Request from ${name}`,
+      `<h2>New Contact Form Submission</h2>
+       <p><strong>Name:</strong> ${name}</p>
+       <p><strong>Email:</strong> ${email}</p>
+       <p><strong>Company/Restaurant:</strong> ${company}</p>
+       <p><strong>Message:</strong></p>
+       <p>${message}</p>
+       <hr>
+       <p style="color:#888;font-size:12px;">Submitted on ${new Date().toLocaleString()}</p>`
+    );
 
     res.status(201).json({
       message: 'Thank you for your interest! Our team will contact you soon.',
@@ -119,6 +178,17 @@ app.post('/api/signup', async (req, res) => {
     console.log('Saving user to database...');
     await user.save();
     console.log('User saved successfully:', user);
+
+    // Send email notification for new signup
+    await sendEmailNotification(
+      `New Early Access Signup: ${email}`,
+      `<h2>New Early Access Signup</h2>
+       <p><strong>Email:</strong> ${email}</p>
+       <p><strong>Phone:</strong> ${phone}</p>
+       <hr>
+       <p style="color:#888;font-size:12px;">Signed up on ${new Date().toLocaleString()}</p>`
+    );
+
     res.status(201).json({ message: 'Registration successful' });
   } catch (error) {
     console.error('Signup error:', error);
